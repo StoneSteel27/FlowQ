@@ -1,21 +1,28 @@
 import asyncio
-import websockets
-import json
-import time
-from base64 import b64decode, b64encode
-import uuid
-import requests
 import inspect
+import json
+import uuid
+from base64 import b64decode, b64encode
 from itertools import cycle
+from types import FunctionType
+from typing import TypeAlias
+
+import requests
+import websockets
+
+JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 
 
 def split(a, n):
+    """Splits given array into n equal chunks of length"""
     k, m = divmod(len(a), n)
     return [a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n)]
 
 
 class FlowQlient:
-    def __init__(self, channel):
+    """FlowQlient is an API to connect and command the cluster"""
+
+    def __init__(self, channel: str):
         self.websocket = None
         self.name = None
         self.workers = []
@@ -28,14 +35,17 @@ class FlowQlient:
         self.delay = 6
         print(self.base_url)
 
-    def upload(self, data):
+    def upload(self, data: JSON):
+        """Uploads the data to the FileBin Server"""
         url = self.base_url + "/input.json"
         requests.post(url, json=data)
 
-    def download(self, bot):
+    def download(self, bot: str) -> JSON:
+        """Downloads the data from the FileBin Server"""
         return requests.get(self.base_url + "/" + bot).json()
 
-    def connect(self, name):
+    def connect(self, name: str):
+        """Initializes the Connection to HackChat for communication with the cluster"""
         self.name = name
 
         async def setup_connection():
@@ -47,6 +57,7 @@ class FlowQlient:
         asyncio.get_event_loop().run_until_complete(setup_connection())
 
     def send(self, payload):
+        """Sends the payload to the HackChat Server"""
         data = b64encode(payload.encode()).decode()
 
         async def send(data):
@@ -54,7 +65,8 @@ class FlowQlient:
 
         asyncio.get_event_loop().run_until_complete(send(self, data))
 
-    def get(self, tasks):
+    def get(self, tasks: list):
+        """The Function to execute the given tasks in Cluster"""
         async def send_task(all_tasks):
             payload = {}
             for i in self.workers:
@@ -87,18 +99,20 @@ class FlowQlient:
 
         return results
 
-    def task(self, func):
-        def wrap(*args, **kwargs):
+    def task(self, func: FunctionType) -> JSON:
+        """A decorator function that converts the function into a task"""
+        def wrap(*args: list, **kwargs: dict) -> JSON:
             code = (inspect.getsource(func))
             code = code[code.find("def"):]
             args = list(args)
             task_id = str(uuid.uuid4())
-            payload = ({"task_id": task_id, "code": code, "args": args, "kwargs": kwargs})
+            payload = {"task_id": task_id, "code": code, "args": args, "kwargs": kwargs}
             return payload
 
         return wrap
 
-    async def get_available_workers(self):
+    async def get_available_workers(self) -> list:
+        """Gets all the available workers"""
         data = await self.websocket.recv()
         payload = json.loads(data)
         if payload["cmd"] == "onlineSet":
@@ -106,7 +120,3 @@ class FlowQlient:
                 if "bot" in i:
                     self.workers.append(i)
         return self.workers
-
-
-
-
