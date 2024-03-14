@@ -1,5 +1,6 @@
 import asyncio
 import json
+import sys
 import traceback
 from base64 import b64decode, b64encode
 from concurrent.futures import ThreadPoolExecutor
@@ -42,10 +43,11 @@ class FlowQluster:
 
     def connect(self, name: str) -> None:
         """Initializes the websocket connection with HackChat"""
-        self.name = name
+        self.name = "bot_"+name
 
         async def setup_connection():
             self.websocket = await websockets.connect(self.uri)
+            self.websocket.close_timeout = 2
             conn = json.dumps({"cmd": "join", "channel": self.channel, "nick": self.name})
             await self.websocket.send(conn)
 
@@ -80,19 +82,23 @@ class FlowQluster:
 
     def initialize_cluster(self):
         """Initializes the cluster for incoming tasks"""
-        while True:
-            raw_payload = self.loop.run_until_complete(self.websocket.recv())
-            payload = json.loads(raw_payload)
-            if payload["cmd"] == "chat" and "bot" not in payload["nick"]:
-                location = (b64decode(payload["text"]).decode())
-                data = self.download(location)
-                tasks = data[self.name]
-                print(f"Recieved {len(tasks)} Tasks from :" + payload["nick"])
-                output_data = self.tasks_handler(tasks)
-                output_location = self.upload(location, output_data)
-                self.send(output_location)
-                print(f"Execution of Tasks from {payload['nick']}")
+        try:
+            while True:
+                raw_payload = self.loop.run_until_complete(self.websocket.recv())
+                payload = json.loads(raw_payload)
+                if payload["cmd"] == "chat" and "bot" not in payload["nick"]:
+                    location = (b64decode(payload["text"]).decode())
+                    data = self.download(location)
+                    tasks = data[self.name]
+                    print(f"Recieved {len(tasks)} Tasks from :" + payload["nick"])
+                    output_data = self.tasks_handler(tasks)
+                    output_location = self.upload(location, output_data)
+                    self.send(output_location)
+                    print(f"Execution of Tasks from {payload['nick']}")
+        except KeyboardInterrupt:
+            print("Shutting down Cluster:"+self.name)
+            self.shutdown()
 
     def shutdown(self):
-        """Shuts down the Connection with the HackChat server"""
-        self.loop.run_until_complete(self.websocket.close())
+        """Shuts down the Connections"""
+        self.websocket.fail_connection()
