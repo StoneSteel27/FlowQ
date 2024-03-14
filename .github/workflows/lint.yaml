@@ -1,0 +1,30 @@
+# GitHub Action Workflow enforcing our code style.
+
+name: Lint
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+concurrency: lint-${{ github.sha }}
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHON_VERSION: "3.11"
+
+    steps:
+      # Checks out the repository in the current folder.
+      - name: Checks out repository
+        uses: actions/checkout@v3
+
+      # Set up the right version of Python
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run pre-commit hooks
+        uses: pre-commit/action@v3.0.0
