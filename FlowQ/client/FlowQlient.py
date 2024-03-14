@@ -35,7 +35,7 @@ class FlowQlient:
         self.delay = 6
         print(self.base_url)
 
-    def upload(self, data: JSON):
+    def upload(self, data: JSON) -> None:
         """Uploads the data to the FileBin Server"""
         url = self.base_url + "/input.json"
         requests.post(url, json=data)
@@ -44,7 +44,7 @@ class FlowQlient:
         """Downloads the data from the FileBin Server"""
         return requests.get(self.base_url + "/" + bot).json()
 
-    def connect(self, name: str):
+    def connect(self, name: str) -> None:
         """Initializes the Connection to HackChat for communication with the cluster"""
         self.name = name
 
@@ -56,7 +56,7 @@ class FlowQlient:
 
         asyncio.get_event_loop().run_until_complete(setup_connection())
 
-    def send(self, payload):
+    def send(self, payload: str) -> None:
         """Sends the payload to the HackChat Server"""
         data = b64encode(payload.encode()).decode()
 
@@ -65,9 +65,9 @@ class FlowQlient:
 
         asyncio.get_event_loop().run_until_complete(send(self, data))
 
-    def get(self, tasks: list):
+    def get(self, tasks: list) -> list:
         """The Function to execute the given tasks in Cluster"""
-        async def send_task(all_tasks):
+        async def send_task():
             payload = {}
             for i in self.workers:
                 payload[i] = []
@@ -91,7 +91,7 @@ class FlowQlient:
                     print(payload["text"])
             return collected_tasks
 
-        fut = asyncio.gather(send_task(tasks), collect_results())
+        fut = asyncio.gather(send_task(), collect_results())
         out = asyncio.get_event_loop().run_until_complete(fut)
         results = []
         for task in tasks:
