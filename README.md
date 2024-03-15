@@ -12,8 +12,8 @@ FlowQ was created for the goal of making distributed computing free, simple and 
 ### _I don't have any other computing devices, and I don't want to spend money...._
 - **Supercharge your cluster in seconds!** FlowQ lets you seamlessly add new machines with Python. Just 2 lines of command, and you've got a processing powerhouse. FlowQ makes scaling effortless.
 ```bash
-!pip install FlowQ
-!python -m FlowQ.cluster -c <your-channel-name>
+pip install FlowQ
+python -m FlowQ.cluster -c <your-channel-name>
 ```
 - You can run these commands in your **Google Colab Instances** or any other computer, for scaling your cluster with ease.
 
@@ -35,3 +35,9 @@ output = flow.get([alpha(i) for i in range(6)])
 
 ```
 #### ⚡Note⚡: Please initialize the cluster before running the Client code(This will be fixed in future updates)
+#### ⚡Note⚡: While executing the client in a jupyter notebook, don't forget to enable nest_asyncio ***first*** by:
+```jupyterpython
+!pip install nest_asyncio
+import nest_asyncio
+nest_asyncio.apply()
+```
