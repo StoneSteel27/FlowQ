@@ -3,9 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-
 name = "FlowQ"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="MoltenSteel", email="stonesteel27@gmail.com" },
 ]
@@ -18,6 +17,12 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+dependencies = [
+  "websockets>=12.0",
+  "requests>=2.31"
+]
+
 [project.urls]
 Homepage = "https://github.com/StoneSteel27/FlowQ"
 Issues = "https://github.com/StoneSteel27/FlowQ/issues"
+
