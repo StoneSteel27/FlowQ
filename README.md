@@ -6,8 +6,8 @@ FlowQ was created for the goal of making distributed computing free, simple and 
 ### _Features of FlowQ:_
 - **Effortless Setup**: Ditch the complicated configurations! FlowQ runs right out of the box, no ssh headaches or pre-installation required.
 - **Simple and Secure Connection**: Leverages the Hack.Chat platform to establish secure, base-64 encrypted and anonymous connections with your computing cluster.
-- Temporary Storage: Need a place to store input and output files? FlowQ utilizes FileBin for convenient temporary storage.
-- Parallel Powerhouse: FlowQ unleashes the true potential of your network by executing tasks in parallel across your machines, significantly boosting your processing speed.
+- **Temporary Storage**: Need a place to store input and output files? FlowQ utilizes FileBin for convenient temporary storage.
+- **Parallel Powerhouse**: FlowQ unleashes the true potential of your network by executing tasks in parallel across your machines(with multi-threading), significantly boosting your processing speed.
 
 ### _I don't have any other computing devices, and I don't want to spend money...._
 - **Supercharge your cluster in seconds!** FlowQ lets you seamlessly add new machines with Python. Just 2 lines of command, and you've got a processing powerhouse. FlowQ makes scaling effortless.
