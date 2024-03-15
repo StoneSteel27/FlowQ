@@ -1,12 +1,12 @@
 import asyncio
 import json
-import sys
 import traceback
 from base64 import b64decode, b64encode
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 from types import FunctionType
 from typing import TypeAlias
+
 import requests
 import websockets
 
