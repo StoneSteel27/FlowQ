@@ -21,6 +21,7 @@ env
 *.so
 dist/
 build/
+*.egg-info/
 
 # IDEs
 # PyCharm

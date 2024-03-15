@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "FlowQ"
+version = "0.0.1"
+authors = [
+  { name="MoltenSteel", email="stonesteel27@gmail.com" },
+]
+description = "Your Friendly Neighbourhood Distributed Computing System"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/StoneSteel27/FlowQ"
+Issues = "https://github.com/StoneSteel27/FlowQ/issues"
