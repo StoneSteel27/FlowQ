@@ -26,10 +26,9 @@ flow.connect(name="<your-user-name>")
 
 @flow.task
 def alpha(x):
-    ## Import all the needed modules inside the function
-    import requests
-    url = "https://uselessfacts.jsph.pl/api/v2/facts/random"
-    return requests.get(url).json()["text"], x
+    import math ## Import all the needed modules inside the function
+    result = math.sin(x) ## Do The Required Processing
+    return result ## return the resultant data
 
 output = flow.get([alpha(i) for i in range(6)])
 
