@@ -42,7 +42,8 @@ class FlowQlient:
 
     def download(self, bot: str) -> JSON:
         """Downloads the data from the FileBin Server"""
-        return requests.get(self.base_url + "/" + bot).json()
+        headers = {"Accept": "*/*", "Cookie": "verified=2024-05-24"}
+        return requests.get(self.base_url + "/" + bot,headers=headers).json()
 
     def connect(self, name: str) -> None:
         """Initializes the Connection to HackChat for communication with the cluster"""
