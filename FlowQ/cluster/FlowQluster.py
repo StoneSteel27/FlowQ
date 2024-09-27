@@ -29,7 +29,7 @@ class FlowQluster:
         """Downloads the input task data"""
         headers = {"Accept": "*/*", "Cookie": "verified=2024-05-24"}
         url = f"https://filebin.net/{location}/input.json"
-        return requests.get(url,headers=headers).json()
+        return requests.get(url, headers=headers).json()
 
     def upload(self, location: str, data: JSON):
         """Uploads the output from completed task"""
