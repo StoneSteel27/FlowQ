@@ -3,6 +3,8 @@
 
 FlowQ was created for the goal of making distributed computing free, simple and easier.
 
+![](https://github.com/StoneSteel27/FlowQ/blob/a67770365609315ff491561fe9f9476171838e3e/FlowQ%20workflow.png)
+
 ### _Features of FlowQ:_
 - **Effortless Setup**: Ditch the complicated configurations! FlowQ runs right out of the box, no ssh headaches or pre-installation required.
 - **Simple and Secure Connection**: Leverages the Hack.Chat platform to establish secure, base-64 encrypted and anonymous connections with your computing cluster.
